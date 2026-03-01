@@ -34,6 +34,8 @@ searchInput?.addEventListener('keypress', async (event) => {
         if (query.length > 0) {
             await doGoogleBooksSearch(query); 
         }
+
+        searchInput.value = '';
     }
 })
 
@@ -245,8 +247,6 @@ function updateStarUi(rating) {
     });
 }
 
-
-
 // Filter books from API by their Status
 
 async function listBooks() {
@@ -274,7 +274,7 @@ async function listBooks() {
         if (allButton) {
             updateTabStatus(allButton);
         }
-        
+
     } catch (error) {
 
         alert('Ocorreu um erro ao listar os livros da sua estante.');
