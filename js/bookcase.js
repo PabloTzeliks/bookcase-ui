@@ -86,12 +86,10 @@ addBookForm.addEventListener('submit', async (event) => {
     }
 
     const requestPayload = {
-        bookRequest: {
-            isbn: currentBookToSave.isbn,
-            title: currentBookToSave.title,
-            authors: currentBookToSave.authors,
-            thumbnailUrl: currentBookToSave.thumbnail
-        },
+        isbn: currentBookToSave.isbn,
+        title: currentBookToSave.title,
+        authors: currentBookToSave.authors,
+        thumbnail_url: currentBookToSave.thumbnail,
         status: status,
         rating: rating
     };
