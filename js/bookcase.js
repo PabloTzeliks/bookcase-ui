@@ -1,4 +1,3 @@
-
 const filterButtons = document.querySelectorAll('.filter-btn');
 
 const searchInput = document.getElementById('search-google-input');
@@ -48,7 +47,7 @@ filterButtons.forEach(btn => {
 
     btn.addEventListener('click', (event) => {
         const clickedButton = event.target;
-        const status = clickedButton.getAttribute('data-status');
+        const status = clickedButton.dataSet.status;
 
         updateTabStatus(clickedButton);
 
@@ -62,7 +61,7 @@ stars.forEach(star => {
     star.addEventListener('click', (e) => {
         const clickedStar = e.currentTarget; 
 
-        const clickedValue = parseInt(clickedStar.getAttribute('data-value'));
+        const clickedValue = Number.parseInt(clickedStar.dataset.value || "0");
 
         updateStarUi(clickedValue);
     });
@@ -77,7 +76,14 @@ addBookForm.addEventListener('submit', async (event) => {
 
     const credential = localStorage.getItem('LibraryCredential');
     const status = document.getElementById('add-modal-status').value;
-    const rating = parseInt(document.getElementById('add-modal-rating').value);
+    const rating = Number.parseInt(document.getElementById('add-modal-rating').value);
+
+    if(!credential) {
+
+        alert('Erro! Sua sessão expirou, faça login novamente.');
+        window.location.href = 'index.html';
+        return;
+    }
 
     const requestPayload = {
         bookRequest: {
@@ -95,7 +101,7 @@ addBookForm.addEventListener('submit', async (event) => {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Authentication': `Basic ${credential}`
+            'Authorization': `Basic ${credential}`
         },
         body: JSON.stringify(requestPayload)
     });
@@ -168,7 +174,6 @@ function renderGoogleBooksResults(books) {
 
     books.forEach(book => {
         const info = book.volumeInfo;
-        const googleId = book.id;
 
         const title = info.title ? String(info.title) : 'Título Desconhecido';
         const authors = info.authors ? info.authors.join(', ') : 'Autor Desconhecido';
@@ -228,7 +233,7 @@ function updateStarUi(rating) {
     ratingInput.value = rating;
 
     stars.forEach(star => {
-        const starValue = parseInt(star.getAttribute('data-value'));
+        const starValue = Number.parseInt(star.dataset.value || "0");
 
         if (starValue <= rating) {
             star.classList.add('text-yellow-400', 'ph-fill');
